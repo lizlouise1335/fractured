@@ -1,0 +1,11 @@
+{
+  "name": "fractured-research",
+  "version": "1.0.0",
+  "description": "A personal research article website for AI-generated research",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "dev": "npx serve . -p 3000 --no-clipboard"
+  },
+  "keywords": ["research", "articles", "ai"],
+  "license": "MIT"
+}
