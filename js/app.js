@@ -35,6 +35,9 @@ function navigateTo(page, data) {
     renderArticle(data);
   } else if (page === 'compose') {
     document.getElementById('page-compose').classList.add('active');
+  } else if (page === 'simulation') {
+    document.getElementById('page-simulation').classList.add('active');
+    initSimulation();
   } else if (page === 'about') {
     document.getElementById('page-about').classList.add('active');
   }

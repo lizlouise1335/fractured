@@ -662,6 +662,300 @@ a:hover { color: var(--color-accent-hover); }
 }
 
 /* ============================================
+   Simulation Page
+   ============================================ */
+
+.sim-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.sim-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-lt);
+  border-radius: 12px;
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.sim-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border-lt);
+}
+
+.sim-panel-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Tabs */
+.sim-tabs {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border-lt);
+  padding-bottom: var(--space-xs);
+}
+
+.sim-tab-btn {
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-mid);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  border-radius: 6px 6px 0 0;
+}
+
+.sim-tab-btn:hover {
+  color: var(--color-text);
+  background: var(--color-accent-bg);
+}
+
+.sim-tab-btn.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.sim-tab-panel {
+  display: none;
+}
+
+.sim-tab-panel.active {
+  display: block;
+  animation: fadeIn 0.2s var(--ease);
+}
+
+/* Form Grid */
+.sim-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md) var(--space-lg);
+}
+
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sim-field-full {
+  grid-column: 1 / -1;
+}
+
+.sim-field label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-mid);
+  letter-spacing: 0.01em;
+}
+
+.sim-unit {
+  font-weight: 400;
+  color: var(--color-text-lt);
+  font-size: 0.75rem;
+}
+
+.sim-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sim-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.1);
+}
+
+.sim-input-sm {
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
+select.sim-input {
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+/* Pump Schedule Table */
+.sim-schedule-wrapper {
+  overflow-x: auto;
+}
+
+.sim-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.sim-schedule-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--color-text-mid);
+  padding: var(--space-sm) var(--space-xs);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.sim-schedule-table td {
+  padding: var(--space-xs);
+  border-bottom: 1px solid var(--color-border-lt);
+}
+
+.sim-schedule-table .sim-input-sm {
+  min-width: 60px;
+}
+
+.sim-schedule-table select.sim-input-sm {
+  min-width: 130px;
+}
+
+.sim-schedule-table td:first-child .sim-input-sm {
+  min-width: 80px;
+}
+
+.sim-row-delete {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-lt);
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sim-row-delete:hover {
+  background: #fde8e8;
+  color: var(--color-danger);
+}
+
+.sim-add-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-md);
+}
+
+/* Run Button */
+.sim-run-section {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border-lt);
+  display: flex;
+  justify-content: center;
+}
+
+.btn-lg {
+  padding: 14px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+/* Results Summary */
+.sim-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.sim-stat-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-lt);
+  border-radius: 10px;
+  padding: var(--space-md);
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.sim-stat-card:hover {
+  border-color: var(--color-accent);
+}
+
+.sim-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.sim-stat-unit {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--color-text-lt);
+  margin-left: 2px;
+}
+
+.sim-stat-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-lt);
+  margin-top: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Charts */
+.sim-charts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.sim-chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.sim-chart-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-lt);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sim-chart-container canvas {
+  width: 100%;
+  height: 300px;
+  display: block;
+}
+
+.sim-chart-wide canvas {
+  height: 380px;
+}
+
+/* ============================================
    Empty State
    ============================================ */
 
@@ -722,6 +1016,12 @@ a:hover { color: var(--color-accent-hover); }
   .article-card { padding: var(--space-md) var(--space-lg); }
   .article-card-title { font-size: 1.2rem; }
   .form-row { grid-template-columns: 1fr; }
+  .sim-form-grid { grid-template-columns: 1fr; }
+  .sim-chart-row { grid-template-columns: 1fr; }
+  .sim-summary { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .sim-panel { padding: var(--space-md); }
+  .sim-chart-container canvas { height: 240px; }
+  .sim-chart-wide canvas { height: 280px; }
 }
 
 @media (max-width: 480px) {
