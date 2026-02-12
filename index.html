@@ -21,6 +21,7 @@
       <div class="nav-links">
         <a href="#" onclick="navigateTo('home'); return false;" class="nav-link active" data-page="home">Articles</a>
         <a href="#" onclick="navigateTo('compose'); return false;" class="nav-link" data-page="compose">Compose</a>
+        <a href="#" onclick="navigateTo('simulation'); return false;" class="nav-link" data-page="simulation">Simulator</a>
         <a href="#" onclick="navigateTo('about'); return false;" class="nav-link" data-page="about">About</a>
       </div>
     </div>
@@ -111,6 +112,211 @@
       </form>
     </section>
 
+    <!-- Simulation -->
+    <section class="page page-simulation" id="page-simulation">
+      <header class="page-header">
+        <h1 class="page-title">Hydraulic Fracturing Simulator</h1>
+        <p class="page-subtitle">PKN-style fracture propagation model with proppant transport</p>
+      </header>
+
+      <div class="sim-layout">
+        <!-- Input Panel -->
+        <div class="sim-panel sim-inputs">
+          <div class="sim-panel-header">
+            <h3>Model Parameters</h3>
+            <button class="btn btn-secondary btn-sm" onclick="resetParameters()">Reset Defaults</button>
+          </div>
+
+          <!-- Tabs for input categories -->
+          <div class="sim-tabs">
+            <button class="sim-tab-btn active" onclick="switchSimTab('sim-tab-well', this)">Well</button>
+            <button class="sim-tab-btn" onclick="switchSimTab('sim-tab-rock', this)">Rock</button>
+            <button class="sim-tab-btn" onclick="switchSimTab('sim-tab-fluid', this)">Fluid</button>
+            <button class="sim-tab-btn" onclick="switchSimTab('sim-tab-schedule', this)">Schedule</button>
+          </div>
+
+          <!-- Well Parameters -->
+          <div class="sim-tab-panel active" id="sim-tab-well">
+            <div class="sim-form-grid">
+              <div class="sim-field">
+                <label>True Vertical Depth <span class="sim-unit">(ft)</span></label>
+                <input type="number" id="sim-tvd" class="sim-input" value="8500" step="100">
+              </div>
+              <div class="sim-field">
+                <label>Perf Top <span class="sim-unit">(ft MD)</span></label>
+                <input type="number" id="sim-perf-top" class="sim-input" value="8450" step="10">
+              </div>
+              <div class="sim-field">
+                <label>Perf Bottom <span class="sim-unit">(ft MD)</span></label>
+                <input type="number" id="sim-perf-bottom" class="sim-input" value="8550" step="10">
+              </div>
+              <div class="sim-field">
+                <label>Number of Perfs</label>
+                <input type="number" id="sim-num-perfs" class="sim-input" value="60" min="1" max="200">
+              </div>
+              <div class="sim-field">
+                <label>Wellbore ID <span class="sim-unit">(in)</span></label>
+                <input type="number" id="sim-wellbore-id" class="sim-input" value="5.5" step="0.125">
+              </div>
+            </div>
+          </div>
+
+          <!-- Rock Properties -->
+          <div class="sim-tab-panel" id="sim-tab-rock">
+            <div class="sim-form-grid">
+              <div class="sim-field">
+                <label>Young's Modulus <span class="sim-unit">(psi)</span></label>
+                <input type="number" id="sim-youngs" class="sim-input" value="4500000" step="100000">
+              </div>
+              <div class="sim-field">
+                <label>Poisson's Ratio</label>
+                <input type="number" id="sim-poissons" class="sim-input" value="0.25" min="0.05" max="0.45" step="0.01">
+              </div>
+              <div class="sim-field">
+                <label>Min Horiz. Stress <span class="sim-unit">(psi)</span></label>
+                <input type="number" id="sim-stress-min" class="sim-input" value="5800" step="50">
+              </div>
+              <div class="sim-field">
+                <label>Max Horiz. Stress <span class="sim-unit">(psi)</span></label>
+                <input type="number" id="sim-stress-max" class="sim-input" value="6900" step="50">
+              </div>
+              <div class="sim-field">
+                <label>Fracture Toughness <span class="sim-unit">(psi&radic;in)</span></label>
+                <input type="number" id="sim-toughness" class="sim-input" value="1500" step="100">
+              </div>
+              <div class="sim-field">
+                <label>Leak-off Coeff. <span class="sim-unit">(ft/&radic;min)</span></label>
+                <input type="number" id="sim-leakoff" class="sim-input" value="0.0015" step="0.0001">
+              </div>
+              <div class="sim-field">
+                <label>Porosity <span class="sim-unit">(fraction)</span></label>
+                <input type="number" id="sim-porosity" class="sim-input" value="0.08" min="0" max="0.4" step="0.01">
+              </div>
+              <div class="sim-field">
+                <label>Permeability <span class="sim-unit">(md)</span></label>
+                <input type="number" id="sim-perm" class="sim-input" value="0.01" step="0.001">
+              </div>
+            </div>
+          </div>
+
+          <!-- Fluid Properties -->
+          <div class="sim-tab-panel" id="sim-tab-fluid">
+            <div class="sim-form-grid">
+              <div class="sim-field sim-field-full">
+                <label>Fluid System</label>
+                <select id="sim-fluid-type" class="sim-input">
+                  <option value="crosslinked-gel">Crosslinked Borate Gel (25# Guar)</option>
+                  <option value="linear-gel">Linear Gel (20# HPG)</option>
+                  <option value="slickwater">Slickwater</option>
+                  <option value="hybrid">Hybrid (Slickwater + Gel)</option>
+                  <option value="visco-elastic">Viscoelastic Surfactant</option>
+                </select>
+              </div>
+              <div class="sim-field">
+                <label>Viscosity @ 100 s<sup>-1</sup> <span class="sim-unit">(cp)</span></label>
+                <input type="number" id="sim-viscosity" class="sim-input" value="250" step="10">
+              </div>
+              <div class="sim-field">
+                <label>Specific Gravity</label>
+                <input type="number" id="sim-sg" class="sim-input" value="1.02" step="0.01">
+              </div>
+              <div class="sim-field">
+                <label>n' <span class="sim-unit">(Power Law Index)</span></label>
+                <input type="number" id="sim-nprime" class="sim-input" value="0.55" min="0.1" max="1" step="0.01">
+              </div>
+              <div class="sim-field">
+                <label>K' <span class="sim-unit">(lbf&middot;s<sup>n'</sup>/ft&sup2;)</span></label>
+                <input type="number" id="sim-kprime" class="sim-input" value="0.045" step="0.005">
+              </div>
+            </div>
+          </div>
+
+          <!-- Pump Schedule -->
+          <div class="sim-tab-panel" id="sim-tab-schedule">
+            <div class="sim-schedule-wrapper">
+              <table class="sim-schedule-table">
+                <thead>
+                  <tr>
+                    <th>Stage</th>
+                    <th>Rate <span class="sim-unit">(bpm)</span></th>
+                    <th>Volume <span class="sim-unit">(gal)</span></th>
+                    <th>Proppant Type</th>
+                    <th>Conc. <span class="sim-unit">(ppa)</span></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="sim-schedule-body">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+              <button class="btn btn-secondary btn-sm sim-add-row" onclick="addScheduleRow()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Add Stage
+              </button>
+            </div>
+          </div>
+
+          <!-- Run Button -->
+          <div class="sim-run-section">
+            <button class="btn btn-primary btn-lg" id="sim-run-btn" onclick="runAndRender()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="margin-right:6px">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+              Run Simulation
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="sim-panel sim-results-panel" id="sim-results" style="display:none;">
+          <div class="sim-panel-header">
+            <h3>Simulation Results</h3>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="sim-summary" id="sim-summary">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Charts -->
+          <div class="sim-charts">
+            <div class="sim-chart-container sim-chart-wide">
+              <canvas id="sim-chart-fracture"></canvas>
+            </div>
+            <div class="sim-chart-row">
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-pressure"></canvas>
+              </div>
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-geometry"></canvas>
+              </div>
+            </div>
+            <div class="sim-chart-row">
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-width"></canvas>
+              </div>
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-widthprofile"></canvas>
+              </div>
+            </div>
+            <div class="sim-chart-row">
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-proppant"></canvas>
+              </div>
+              <div class="sim-chart-container">
+                <canvas id="sim-chart-efficiency"></canvas>
+              </div>
+            </div>
+            <div class="sim-chart-container sim-chart-wide">
+              <canvas id="sim-chart-rate"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- About -->
     <section class="page page-about" id="page-about">
       <header class="page-header">
@@ -158,6 +364,7 @@
 
   <script src="js/markdown.js"></script>
   <script src="js/articles.js"></script>
+  <script src="js/simulation.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
